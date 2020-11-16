@@ -1,0 +1,44 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+<div class="container mt-4" id="breadcrumb-container">
+
+    <div class="row">
+        <nav class='col-md-9' aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'activity'%}">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Projects</li>
+            </ol>
+        </nav>
+        <div class="col-md-3">   
+            <a href="{%url 'add-project' %}" class='btn btn-primary'>Add Project</a>
+        </div>
+    </div>
+    <div class="container">   
+        {%include 'partials/_messages.html'%}
+        {%if project.count%}
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>Project Name</th>
+                    <th >Project Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for proj in project%}
+                <tr>
+                    <td>{{proj.name}}</td>
+                    <td>{{proj.details}}</td>
+                    <td><a href="{%url 'project-edit' proj.id %}" class='btn btn-secondary'>Edit</a></td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        {%endif%}
+    </div>
+</div>
+
+
+{%endblock%}

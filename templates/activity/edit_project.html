@@ -1,0 +1,42 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+<div class="container mt-4" id="breadcrumb-container">
+    <div class="row">
+        <nav class='col-md-9' aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'projects'%}">Projects</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Edit Project</li>
+            </ol>
+        </nav>
+    </div>
+    
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form action="{%url 'project-edit' project.id %}" method="post">
+            {%include 'partials/_messages.html'%}
+            {%csrf_token%}
+            <div class="form-group">
+                <label>Project Name</label>
+                <input name='pname' class='form-control form-control-sm' type="text" value=''>
+                
+            </div>
+            <div class="form-group">
+                <label>Project Description</label>
+                <textarea name="pdesc" id="" cols="30" rows="10" class="form-control"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Submit" class='btn btn-primary btn-primary-sm'>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+{%endblock%}
