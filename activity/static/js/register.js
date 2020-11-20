@@ -34,7 +34,6 @@ usernameField.addEventListener("keyup", (e)=>{
     })
         .then((res)=>res.json())
         .then((data)=>{
-        console.log("data",data);
         if(data.username_error){
             submitbtn.setAttribute("disabled","disabled");
             usernameField.classList.add('is-invalid');

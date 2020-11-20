@@ -1,5 +1,5 @@
 {%extends 'base.html'%}
-
+{%load static%}
 {%block content%}
 
 <div class="container" id="breadcrumb-container">
@@ -19,37 +19,70 @@
    <div class="container">
         {%include 'partials/_messages.html'%}
         {%if activity.count %}
-        <table class="table table-stripped table-hover">
-           <thead>
-               <tr>
-                   <th> Date </th>
-                   <th> Hours of Sleep</th>
-                   <th> Quality of Sleep</th>
-                   <th> Number of Classes </th>
-                   <th> Workout </th>
-                   <th> Quality of Day </th>
-                   <th> Project Name</th>
-                   <th>Project Hours</th>
-                   <th></th>
-               </tr>
-           </thead>
-           <tbody>
 
-                {%for act in page_obj%}
-               <tr>
-                   <td>{{act.date}}</td>
-                   <td>{{act.sleep}}</td>
-                   <td>{{act.qsleep}}</td>
-                   <td>{{act.classes}}</td>
-                   <td>{{act.workout}}</td>
-                   <td>{{act.qday}}</td>
-                   <td>{{act.project}}</td>
-                   <td>{{act.phours}}</td>
-                   <td><a href="{%url 'activity-edit' act.id %}" class='btn btn-secondary'>Edit</a></td>
-               </tr>
-               {%endfor%}
-           </tbody>
-        </table>
+        <div class="row mt-4 ">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="text" id='searchField' class="form-control" placeholder="Search">
+                </div>
+            </div>
+        </div>
+        <div class="app-table">
+            <table class="table table-stripped table-hover">
+                <thead>
+                    <tr>
+                        <th> Date </th>
+                        <th> Hours of Sleep</th>
+                        <th> Quality of Sleep</th>
+                        <th> Number of Classes </th>
+                        <th> Workout </th>
+                        <th> Quality of Day </th>
+                        <th> Project Name</th>
+                        <th>Project Hours</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+     
+                     {%for act in page_obj%}
+                    <tr>
+                        <td>{{act.date}}</td>
+                        <td>{{act.sleep}}</td>
+                        <td>{{act.qsleep}}</td>
+                        <td>{{act.classes}}</td>
+                        <td>{{act.workout}}</td>
+                        <td>{{act.qday}}</td>
+                        <td>{{act.project}}</td>
+                        <td>{{act.phours}}</td>
+                        <td><a href="{%url 'activity-edit' act.id %}" class='btn btn-secondary'>Edit</a></td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+             </table>
+        </div>
+    <p class="no-results" style="display: none;">No results </p>
+        <div class="table-output">
+            <table class="table table-stripped table-hover">
+                <thead>
+                    <tr>
+                        <th> Date </th>
+                        <th> Hours of Sleep</th>
+                        <th> Quality of Sleep</th>
+                        <th> Number of Classes </th>
+                        <th> Workout </th>
+                        <th> Quality of Day </th>
+                        <th> Project Name</th>
+                        <th>Project Hours</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class='table-body'>
+     
+                    
+                </tbody>
+             </table>
+        </div>
         <div class="pagination-container">
             <div class="">
               Showing page {{page_obj.number}} of {{ page_obj.paginator.num_pages }}
@@ -72,6 +105,7 @@
 
    </div>    
 </div>
+<script src="{%static 'js/searchExpenses.js' %}"></script>
 
 
 {%endblock%}

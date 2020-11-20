@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('', views.index,name="activity"),
@@ -10,5 +11,6 @@ urlpatterns = [
     path('projects', views.projects,name="projects"),
     path('add-project', views.add_project,name="add-project"),
     path('project-edit/<int:id>', views.project_edit,name="project-edit"),
+    path('search-activity', csrf_exempt(views.search_activity),name="search-activity"),
 
 ]
