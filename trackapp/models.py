@@ -25,7 +25,7 @@ class Activity(models.Model):
     phours= models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(24)],default=0)
     class Meta:
         unique_together = (('date', 'owner'))
-        ordering:['-date']
+        ordering=['-date']
         verbose_name_plural='Activities'
 
 class Project(models.Model):
