@@ -5,6 +5,11 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 import json
 from django.http import JsonResponse
+import datetime
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.contrib.auth.models import User
+
 
 
 def search_activity(request):
@@ -218,3 +223,153 @@ def project_edit(request,id):
         project.save()
         messages.success(request,'Project edited successfully!')
         return redirect('projects')
+
+def sleepstatistics(request):
+    return render(request,'activity/sleepstatistics.html')
+
+def projectstatistics(request):
+    return render(request,'activity/projectstats.html')
+
+def workoutstatistics(request):
+    return render(request,'activity/summarystats.html')
+    
+def daystatistics(request):
+    return render(request,'activity/daystats.html')
+
+def get_data(request):
+    todays_date=datetime.date.today()
+    one_month_ago= todays_date-datetime.timedelta(days=30)
+    activities=Activity.objects.filter(owner=request.user,date__gte=one_month_ago,date__lte=todays_date)
+
+    sleepdict={}
+    qsleepdict={}
+    projectdict={}
+    workoutdict={}
+    qdaydict={}
+    classesdict={}
+
+    class Getdata:
+
+        
+
+        def get_sleep(activity):
+            date= str(activity.date)
+            sleep= activity.sleep
+            return {date:sleep}
+
+        def get_qsleep(activity):
+            date= str(activity.date)
+            qsleep= activity.qsleep
+            return {date:qsleep}
+
+        def get_project(activity):
+            return activity.project
+
+        def get_workout(activity):
+            date= str(activity.date)
+            workout= activity.workout
+            return {date:workout}
+
+        def get_qday(activity):
+            date= str(activity.date)
+            qday= activity.qday
+            return {date:qday}
+
+        def get_classes(activity):
+            date= str(activity.date)
+            classes= activity.classes
+            return {date:classes}
+        
+
+        def get_project_hours(project):
+            hours=0
+            for x in activities.filter(project=project):
+                hours+=x.phours
+
+            return hours
+
+        def get_monthly_project_hours():
+            hours=0
+            for x in activities:
+                hours+=x.phours
+            return hours
+
+        def get_monthly_class_hours():
+            hours=0
+            for x in activities:
+                hours+=x.classes
+            return hours
+
+        def get_monthly_workout_hours():
+            hours=0
+            for x in activities:
+                hours+=x.workout
+            return hours
+
+        def get_monthly_sleep_hours():
+            hours=0
+            for x in activities:
+                hours+=x.sleep
+            return hours
+
+    
+    
+    project_list=list(set(map(Getdata.get_project,activities)))
+    sleep_list=list(map(Getdata.get_sleep,activities))
+    qsleep_list=list(map(Getdata.get_qsleep,activities))
+    workout_list=list(map(Getdata.get_workout,activities))
+    qday_list=list(map(Getdata.get_qday,activities))
+    classes_list=list(map(Getdata.get_classes,activities))
+    tdict={'project':Getdata.get_monthly_project_hours(),'class':Getdata.get_monthly_class_hours(),'workout':Getdata.get_monthly_workout_hours(),'sleep':Getdata.get_monthly_sleep_hours()}
+    
+    
+    
+    count=0
+    for x in activities:
+        count+=1
+    
+    avg_dict={'project':round(tdict['project']/count,2), 'classes':round(tdict['class']/count),'workout':round(tdict['workout']/count),'sleep':round(tdict['sleep']/count,2)}
+
+    for x in activities:
+        for y in project_list:
+            projectdict[y]=Getdata.get_project_hours(y)
+
+    for y in sleep_list:
+        for key,val in y.items():
+            sleepdict[key]=val
+    for y in qsleep_list:
+        for key,val in y.items():
+            qsleepdict[key]=val
+
+    for y in workout_list:
+        for key,val in y.items():
+            workoutdict[key]=val
+
+    for y in qday_list:
+        for key,val in y.items():
+            qdaydict[key]=val
+
+    for y in classes_list:
+        for key,val in y.items():
+            classesdict[key]=val
+
+
+    
+
+
+    return JsonResponse({'averages':avg_dict,'sleep_data':sleepdict,'qsleep_data':qsleepdict,'project_data':projectdict,'workout_data':workoutdict,'qday_data':qdaydict,'classes_data':classesdict,'total':tdict}, safe=False)
+
+             
+            
+
+# class ChartData(APIView,request):
+#     authentication_classes = []
+#     permission_classes = []
+
+#     def get(self, request, format=None):
+#         todays_date=datetime.date.today()
+#         one_month_ago= todays_date-datetime.timedelta(days=30)
+#         activities=[user.date for user in Activity.objects.all()]
+
+#         # usernames = [user.username for user in User.objects.all()]
+#         return Response(activities)

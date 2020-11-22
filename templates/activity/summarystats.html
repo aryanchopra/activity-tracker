@@ -1,0 +1,45 @@
+{% extends 'base.html'%}
+{%load static%}
+{%block content%}
+<div class="container mt-4">
+    <div class="row">
+        <nav class='col-md-9' aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'activity'%}">Home</a></li>
+              <li class="breadcrumb-item" aria-current="page">Statistics</li>
+              <li class="breadcrumb-item active" aria-current="page">Summary</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <h2 class="montserrat display-4 text-center mb-4">Last 30 days</h2>
+    <div class="row">
+        
+        <div class="chart-container col-md-8" style="position: relative; height:20vh; width:20vw">
+            <canvas id="summaryChart" width="400" height="200"></canvas>
+        </div>
+        <div class="montserrat col-md-4">
+            <h1 class=' text-center'> <i>On an average</i></h3>
+            <ul>
+                <li><p class="lead">You slept approximately <mark id='sleepavg'></mark> hours per day.</p> </li>
+                <li><p class="lead">You attended approximately <mark id='classavg'></mark> classes per day.</p> </li>
+                <li><p class="lead">You worked out approximately <mark id='workoutavg'></mark> hours per day.</p> </li>
+                <li><p class="lead">You worked on your projects for <mark id='projectavg'></mark> hours per day.</p> </li>
+
+            </ul>
+            
+            
+        </div>
+        
+    </div>
+    
+</div>
+
+
+
+<script src="{% static 'js/summarystats.js'%}"></script>
+{%endblock%}

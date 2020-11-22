@@ -12,5 +12,10 @@ urlpatterns = [
     path('add-project', views.add_project,name="add-project"),
     path('project-edit/<int:id>', views.project_edit,name="project-edit"),
     path('search-activity', csrf_exempt(views.search_activity),name="search-activity"),
+    path('sleepstatistics', views.sleepstatistics,name="sleepstatistics"),
+    path('projectstatistics', views.projectstatistics,name="projectstatistics"),
+    path('summarystatistics', views.workoutstatistics,name="summarystatistics"),
+    path('daystatistics', views.daystatistics,name="daystatistics"),
+    path('get_data',views.get_data,name='get_data')
 
 ]
