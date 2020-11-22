@@ -361,15 +361,3 @@ def get_data(request):
 
              
             
-
-# class ChartData(APIView,request):
-#     authentication_classes = []
-#     permission_classes = []
-
-#     def get(self, request, format=None):
-#         todays_date=datetime.date.today()
-#         one_month_ago= todays_date-datetime.timedelta(days=30)
-#         activities=[user.date for user in Activity.objects.all()]
-
-#         # usernames = [user.username for user in User.objects.all()]
-#         return Response(activities)
